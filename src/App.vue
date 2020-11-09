@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Cart :items="items" @add-pizza="$emit('add-to-cart',pizza)" />
-    <Pizzas :pizzas="pizzas"/>
+    <Cart :items="items" @clear-cart="clearCart"/>
+    <Pizzas :pizzas="pizzas" @add-pizza="addToCart"/>
 
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
         {
           id: 1,
           name: "Margheritta",
-          ingrediens: ['sos pomidorowy, ser mozzarella'],
+          ingredients: ['sos pomidorowy', 'ser mozzarella'],
           hasgluten: true,
           haslactose: true,
           price: 15
@@ -31,7 +31,7 @@ export default {
         {
           id: 2,
           name: "Capricciosa",
-          ingrediens: ['sos pomidorowy', 'ser mozzarella','szynka'],
+          ingredients: ['sos pomidorowy', 'ser mozzarella','szynka'],
           hasgluten: true,
           haslactose: true,
           price: 18
@@ -39,7 +39,7 @@ export default {
         {
           id: 3,
           name: "Pepperoni Bez Glutenu",
-          ingrediens: ['sos pomidorowy', 'ser mozzarella','salami pepperoni'],
+          ingredients: ['sos pomidorowy', 'ser mozzarella','salami pepperoni'],
           hasgluten: false,
           haslactose: true,
           price: 25
@@ -47,7 +47,7 @@ export default {
         {
           id: 4,
           name: "Hawajska Bez Glutenu i Bez Laktozy",
-          ingrediens: ['sos pomidorowy', 'ser mozzarella','ananas'],
+          ingredients: ['sos pomidorowy', 'ser mozzarella','ananas'],
           hasgluten: false,
           haslactose: false,
           price: 30
@@ -57,7 +57,10 @@ export default {
   },
   methods: {
     addToCart(pizza){
-      this.items += pizza
+      this.items = [...this.items, pizza]
+    },
+    clearCart(){
+      this.items = []
     }
   }
 };
