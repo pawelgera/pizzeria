@@ -1,68 +1,86 @@
 <template>
   <div id="app">
-    <Cart :items="items" @clear-cart="clearCart"/>
-    <Pizzas :pizzas="pizzas" @add-pizza="addToCart"/>
-
+    <Cart
+      :cartItems="cartItems"
+      @clear-cart="clearCart"
+      @del-cart-item="deleteCartItem"
+    />
+    <Pizzas :pizzas="pizzas" @add-pizza="addToCart" />
   </div>
 </template>
 
 <script>
-import Pizzas from './components/Pizzas';
-import Cart from './components/Cart'
+import Pizzas from "./components/Pizzas";
+import Cart from "./components/Cart";
+import { v4 as uuidv4 } from 'uuid';
 export default {
   name: "App",
   components: {
     Pizzas,
-    Cart
+    Cart,
   },
   data() {
     return {
-      msg:'hello',
-      items: [],
+      msg: "hello",
+      cartItems: [],
       pizzas: [
         {
           id: 1,
           name: "Margheritta",
-          ingredients: ['sos pomidorowy', 'ser mozzarella'],
-          hasgluten: true,
-          haslactose: true,
-          price: 15
+          ingredients: ["sos pomidorowy", "ser mozzarella"],
+          hasGluten: true,
+          hasLactose: true,
+          price: 15,
         },
         {
           id: 2,
           name: "Capricciosa",
-          ingredients: ['sos pomidorowy', 'ser mozzarella','szynka'],
-          hasgluten: true,
-          haslactose: true,
-          price: 18
+          ingredients: ["sos pomidorowy", "ser mozzarella", "szynka"],
+          hasGluten: true,
+          hasLactose: true,
+          price: 18,
         },
         {
           id: 3,
           name: "Pepperoni Bez Glutenu",
-          ingredients: ['sos pomidorowy', 'ser mozzarella','salami pepperoni'],
-          hasgluten: false,
-          haslactose: true,
-          price: 25
+          ingredients: ["sos pomidorowy", "ser mozzarella", "salami pepperoni"],
+          hasGluten: false,
+          hasLactose: true,
+          price: 25,
         },
         {
           id: 4,
           name: "Hawajska Bez Glutenu i Bez Laktozy",
-          ingredients: ['sos pomidorowy', 'ser mozzarella','ananas'],
-          hasgluten: false,
-          haslactose: false,
-          price: 30
-        }
-      ]
+          ingredients: ["sos pomidorowy", "ser mozzarella", "ananas"],
+          hasGluten: false,
+          hasLactose: false,
+          price: 30,
+        },
+      ],
     };
   },
   methods: {
-    addToCart(pizza){
-      this.items = [...this.items, pizza]
+    addToCart(pizza) {
+      const newCartItem = {
+        cartItemId: uuidv4(),
+        name: pizza.name,
+        id: pizza.id,
+        ingredients: pizza.ingredients,
+        hasGluten: pizza.hasgluten,
+        hasLactose: pizza.haslactose,
+        price: pizza.price
+      }
+      this.cartItems = [...this.cartItems, newCartItem];
     },
-    clearCart(){
-      this.items = []
-    }
-  }
+    clearCart() {
+      this.cartItems = [];
+    },
+    deleteCartItem(id) {
+      this.cartItems = this.cartItems.filter(
+        (item) => item.cartItemId != id
+      );
+    },
+  },
 };
 </script>
 
